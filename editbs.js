@@ -1,23 +1,27 @@
-$('body').append('<form id="rtEditBS" class="position-absolute border p-2" style="background:purple;display:none;">'+
-'<div class="form-row">'+
-'<p id="rtEditBS_getPath"></p>'+
-'<div class="input-group mb-3 input-group-sm">'+
-'<div class="input-group-prepend">'+
-'<span class="input-group-text">class=</span>'+
-'</div>'+
-'<input id="rtEditBS_input_class" type="text" class="form-control m-1" value=""/>'+
-'</div>'+
-'<div class="input-group mb-3 input-group-sm">'+
-'<div class="input-group-prepend">'+
-'<span class="input-group-text">style=</span>'+
-'</div>'+
-'<input id="rtEditBS_input_style" type="text" class="form-control m-1" value=""/>'+
-'</div>'+
-'<button id="rtEditBS_update" type="button" class="btn btn-sm btn-success m-1 float-right">Update</button>'+
-'<button id="rtEditBS_close" type="button" class="btn btn-sm btn-warning m-1 float-right">Close</button>'+
-'</div>'+
-'<div id="rtEditBS_history" class="form-row"></row>'+
-'</form>');
+$('body').append('<div id="rtEditBS" class="container position-absolute border p-3;" style="background:whitesmoke;display:none;">'+
+    '<div class="form-row">'+
+        '<p id="rtEditBS_getPath" class="col-12 text-center"></p>'+
+        '<div class="input-group mx-3 input-group-sm">'+
+            '<div class="input-group-prepend">'+
+                '<span class="input-group-text text-right" style="width:50px">class=</span>'+
+            '</div>'+
+            '<input id="rtEditBS_input_class" type="text" class="form-control m-1" value=""/>'+
+        '</div>'+
+        '<div class="input-group mx-3 input-group-sm">'+
+            '<div class="input-group-prepend">'+
+                '<span class="input-group-text text-right" style="width:50px">style=</span>'+
+            '</div>'+
+            '<input id="rtEditBS_input_style" type="text" class="form-control m-1" value=""/>'+
+        '</div>'+
+    '</div>'+
+    '<div class="row" style="width:100%;">'+
+        '<div class="col-12">'+
+            '<button id="rtEditBS_update" type="button" class="btn btn-sm btn-success m-1 float-right">Update</button>'+
+            '<button id="rtEditBS_close" type="button" class="btn btn-sm btn-warning m-1 float-right">Close</button>'+
+        '</div>'+
+    '</div>'+
+    '<div id="rtEditBS_history" class="row"></div>'+
+'</div>');
 var mouseX;
 var mouseY;
 var $target;
@@ -36,8 +40,8 @@ $(document).on('contextmenu',function(e){
 
 function saveState(){
     var selector = $target.getPath();
-    var classList = $target.attr('class') || '';
-    var styleList = $target.attr('style') || '';
+    var classList = $target.attr('class');
+    var styleList = $target.attr('style');
     $('#rtEditBS_getPath').html(selector);
     $('#rtEditBS_input_class').val(classList);
     $('#rtEditBS_input_style').val(styleList);
@@ -52,25 +56,35 @@ function saveState(){
 }
 
 function updateHistory(){
-    var history = '<div class="container">';
+    var history = '<table class="table table-sm text-center small" style="width:100%;">';
+    history += '<thead><tr>';
+    history += '<th style="width:10%"></th>';
+    history += '<th style="width:45%">before</th>';
+    history += '<th style="width:45%">after</th>';
+    history += '</tr></thead><tbody>';
     for (let i = 0; i < changes.length; i++) {
         const change = changes[i];
-        history += '<div class="row m-3" style="background:pink;">';
-        history += '<div class="col-12 text-center" style="background:white;color:black;">'+change.selector+'</div>';
-        history += '</div>';
-        history += '<div class="row m-3" style="background:pink;">';
-        history += '<div class="col">'+change.before.classList+'</div>';
-        history += '<div class="col">'+change.before.styleList+'</div>';
-        history += '</div>';
+        let changeafterclassList = '';
+        let changeafterstyleList = '';
         if(change.after) {
-            history += '<div class="row m-3" style="background:lightgreen;">';
-            history += '<div class="col">'+change.after.classList+'</div>';
-            history += '<div class="col">'+change.after.styleList+'</div>';
-            history += '</div>';
+            changeafterclassList = change.after.classList;
+            changeafterstyleList = change.after.styleList;
         }
-        history += '</div>';
+        history += '<tr>';
+        history +=  '<td class="text-left font-bold font-italic" colspan="3">'+change.selector+'</td>';
+        history += '</tr>';
+        history += '<tr>';
+        history +=  '<td>class=</td>';
+        history +=  '<td style="color:maroon;">'+change.before.classList+'</td>';
+        history +=  '<td style="color:darkgreen;">'+changeafterclassList+'</td>';
+        history += '</tr>';
+        history += '<tr>';
+        history +=  '<td>style=</td>';
+        history +=  '<td style="color:maroon;">'+change.before.styleList+'</td>';
+        history +=  '<td style="olor:darkgreen;">'+changeafterstyleList+'</td>';
+        history += '</tr>';
     }
-    history += '</div>';
+    history += '</tbody></table>';
     $('#rtEditBS_history').html(history);
 }
 
