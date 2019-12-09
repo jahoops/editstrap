@@ -81,7 +81,7 @@ function updateHistory(){
         history += '<tr>';
         history +=  '<td>style=</td>';
         history +=  '<td style="color:maroon;">'+change.before.styleList+'</td>';
-        history +=  '<td style="olor:darkgreen;">'+changeafterstyleList+'</td>';
+        history +=  '<td style="color:darkgreen;">'+changeafterstyleList+'</td>';
         history += '</tr>';
     }
     history += '</tbody></table>';
